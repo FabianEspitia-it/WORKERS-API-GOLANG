@@ -7,7 +7,7 @@ import (
 
 
 func init(){
-	initializers.Load_variables()
+	initializers.Db_connection()
 }
 
 func main()  {
