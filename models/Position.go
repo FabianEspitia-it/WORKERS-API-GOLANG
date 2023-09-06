@@ -1,14 +1,12 @@
 package models
 
-
-import(
+import (
 	"gorm.io/gorm"
 )
 
-
 type Position struct {
-    gorm.Model
-    PositionName        string `gorm:"type:varchar(50);not null;unique_index" json:"Name"`
-    Description string `json:"description"`
+	ID        uint           `gorm:"primaryKey"`
+	PositionName string `gorm:"type:varchar(50);not null;unique_index"`
+	Description  string
+  	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
-
