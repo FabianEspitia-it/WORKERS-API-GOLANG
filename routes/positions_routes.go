@@ -5,6 +5,7 @@ import (
 	"github.com/FabianEspitia-it/workers-crud/handlers"
 )
 
+// Positions Routes
 func PositionsRouter(r *gin.Engine) {
 	router := r.Group("/")
 

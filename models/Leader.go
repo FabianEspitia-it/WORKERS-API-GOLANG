@@ -3,6 +3,8 @@ package models
 import (
 	"gorm.io/gorm"
 )
+
+// leader table
 type Leader struct {
 	ID        uint           `gorm:"primaryKey"`
 	LeaderName string `gorm:"type:varchar(100);not null"`

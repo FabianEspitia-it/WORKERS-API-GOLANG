@@ -16,6 +16,7 @@ func main() {
 	routes.WorkerRouter(router)
 	routes.PositionsRouter(router)
 	routes.CountriesRouter(router)
+	routes.LeaderRouter(router)
 
 	router.Run()
 }

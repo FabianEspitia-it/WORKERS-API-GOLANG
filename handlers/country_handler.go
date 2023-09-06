@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Show all countries
 func GetCountries(context *gin.Context) {
 	var countries []models.Country
 
@@ -16,9 +17,10 @@ func GetCountries(context *gin.Context) {
 	})
 }
 
+// Add new countries
 func AddCountries(context *gin.Context) {
 	var Data struct {
-		CountryName string `json:"worker_name" binding:"required"`
+		CountryName string `json:"country_name" binding:"required"`
 	}
 
 	if err := context.ShouldBindJSON(&Data); err != nil {

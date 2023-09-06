@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Show all positions
 func GetPositions(context *gin.Context) {
 	var positions []models.Position
 
@@ -16,12 +17,32 @@ func GetPositions(context *gin.Context) {
 	})
 }
 
+// Add a new position into database
 func AddPosition(context *gin.Context) {
-	position := models.Position{PositionName: "gamer", Description: "lalala"}
+	var Data struct {
+		PositionName string `json:"position:name" binding:"required"`
+		Description string `json:"description" binding:"required"`
+	}
 
-	db.DB.Create(&position)
+	if err := context.ShouldBindJSON(&Data); err != nil {
+		context.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	position := models.Position{
+		PositionName: Data.PositionName,
+		Description: Data.Description,
+	}
+
+	result := db.DB.Create(&position)
+
+	if result.Error != nil {
+		context.JSON(400, gin.H{"error": result.Error.Error()})
+		return
+	}
 
 	context.JSON(200, gin.H{
-		"position": position,
+		"message": "position added successfully",
+		"country": position,
 	})
 }

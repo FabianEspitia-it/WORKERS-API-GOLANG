@@ -4,6 +4,8 @@ import (
 	"gorm.io/gorm"
 )
 
+
+// Worker table
 type Worker struct {
 	ID        uint    `gorm:"primaryKey"`
 	WorkerName string `gorm:"type:varchar(100);not null"`

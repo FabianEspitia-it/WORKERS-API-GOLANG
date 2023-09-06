@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Add a new worker into db
 func AddWorker(context *gin.Context) {
 	var Data struct {
 		WorkerName string `json:"worker_name" binding:"required"`
@@ -44,9 +45,12 @@ func AddWorker(context *gin.Context) {
 		return
 	}
 
-	context.JSON(200, gin.H{"worker": worker})
+	context.JSON(200, gin.H{
+		"message": "Worker added successfully",
+		"worker": worker})
 }
 
+// Show all workers
 func GetWorkers(context *gin.Context) {
 	var workers []models.Worker
 
@@ -62,6 +66,7 @@ func GetWorkers(context *gin.Context) {
 	})
 }
 
+// Show a worker
 func GetWorker(context *gin.Context) {
 	id := context.Param("id")
 
@@ -80,6 +85,8 @@ func GetWorker(context *gin.Context) {
 	context.JSON(200, gin.H{"worker": worker})
 }
 
+
+// Update a worker
 func UpdateWorker(context *gin.Context) {
 
 	id := context.Param("id")
@@ -115,6 +122,7 @@ func UpdateWorker(context *gin.Context) {
 
 }
 
+// Delete a worker
 func DeleteWorker(context *gin.Context) {
 	id := context.Param("id")
 

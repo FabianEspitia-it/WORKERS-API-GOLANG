@@ -7,14 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddWorker(context *gin.Context) {
+// Add a new lider into db
+func AddLeader(context *gin.Context) {
 	var Data struct {
-		WorkerName string `json:"worker_name" binding:"required"`
+		LeaderName string `json:"leader_name" binding:"required"`
 		Email      string `json:"email" binding:"required,email"`
 		Password   string `json:"password" binding:"required"`
-		RolID      uint   `json:"rol_id" binding:"required"`
 		CountryID  uint   `json:"country_id" binding:"required"`
-		LeaderID   uint   `json:"leader_id"`
 	}
 
 	if err := context.ShouldBindJSON(&Data); err != nil {
@@ -28,29 +27,31 @@ func AddWorker(context *gin.Context) {
 	}
 
 	hashed_password, _ := utils.HashPassword(Data.Password)
-	worker := models.Worker{
-		WorkerName: Data.WorkerName,
+	leader := models.Leader{
+		LeaderName: Data.LeaderName,
 		Email:      Data.Email,
 		Password:   hashed_password,
-		RolID:      Data.RolID,
 		CountryID:  Data.CountryID,
-		LeaderID:   Data.LeaderID,
 	}
 
-	result := db.DB.Create(&worker)
+	result := db.DB.Create(&leader)
 
 	if result.Error != nil {
 		context.JSON(400, gin.H{"error": result.Error.Error()})
 		return
 	}
 
-	context.JSON(200, gin.H{"worker": worker})
+	context.JSON(200, gin.H{
+		"message": "Leader added successfully",
+		"leader": leader,
+	})
 }
 
-func GetWorkers(context *gin.Context) {
-	var workers []models.Worker
+// Show all leaders 
+func GetLeaders(context *gin.Context) {
+	var leaders []models.Leader
 
-	if err := db.DB.Find(&workers).Error; err != nil {
+	if err := db.DB.Find(&leaders).Error; err != nil {
 		context.JSON(500, gin.H{
 			"error": err.Error(),
 		})
@@ -58,69 +59,65 @@ func GetWorkers(context *gin.Context) {
 	}
 
 	context.JSON(200, gin.H{
-		"workers": workers,
+		"leaders": leaders,
 	})
 }
 
-func GetWorker(context *gin.Context) {
+// Show a leader
+func GetLeader(context *gin.Context) {
 	id := context.Param("id")
 
-	var worker models.Worker
-	result := db.DB.First(&worker, id)
+	var leader models.Leader
+	result := db.DB.First(&leader, id)
 
 	if result.Error != nil {
-		context.JSON(400, gin.H{"error": "worker not found"})
+		context.JSON(400, gin.H{"error": "leader not found"})
 		return
 	}
+	db.DB.Model(&leader).Association("Country").Find(leader.CountryID)
 
-	db.DB.Model(&worker).Association("Position").Find(worker.RolID)
-	db.DB.Model(&worker).Association("Country").Find(worker.CountryID)
-	db.DB.Model(&worker).Association("Leader").Find(worker.LeaderID)
-
-	context.JSON(200, gin.H{"worker": worker})
+	context.JSON(200, gin.H{"leader": leader})
 }
 
-func UpdateWorker(context *gin.Context) {
+// Update a leader
+func UpdateLeader(context *gin.Context) {
 
 	id := context.Param("id")
 
 	var Data struct {
-		WorkerName string
+		LeaderName string
 		Email      string
 		Password   string
-		RolID      uint
 		CountryID  uint
-		LeaderID   uint
 	}
 
 	context.Bind(&Data)
 
-	var worker models.Worker
-	db.DB.First(&worker, id)
+	var leader models.Leader
+	db.DB.First(&leader, id)
 
 	hashed_password, _ := utils.HashPassword(Data.Password)
-	db.DB.Model(&worker).Updates(models.Worker{
-		WorkerName: Data.WorkerName,
+	db.DB.Model(&leader).Updates(models.Leader{
+		LeaderName: Data.LeaderName,
 		Email:      Data.Email,
 		Password:   hashed_password,
-		RolID:      Data.RolID,
 		CountryID:  Data.CountryID,
-		LeaderID:   Data.LeaderID,
 	})
 
 	context.JSON(200, gin.H{
 		"message": "Information updated successfully",
-		"worker":  worker,
+		"leader":  leader,
 	})
 
 }
 
-func DeleteWorker(context *gin.Context) {
+// Delete a leader
+func DeleteLeader(context *gin.Context) {
 	id := context.Param("id")
 
-	db.DB.Delete(&models.Worker{}, id)
+	db.DB.Delete(&models.Leader{}, id)
 
 	context.JSON(200, gin.H{
-		"Message": "Worker eliminated correctly",
+		"Message": "Leader eliminated correctly",
 	})
 }
