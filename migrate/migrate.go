@@ -13,5 +13,5 @@ func init()  {
 }
 
 func main(){
-	initializers.DB.AutoMigrate(&models.Worker{},&models.Position{}, &models.Country{})
+	initializers.DB.AutoMigrate(&models.Worker{},&models.Position{}, &models.Country{}, &models.Leader{})
 }

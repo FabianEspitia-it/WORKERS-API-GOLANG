@@ -6,9 +6,9 @@ import(
 )
 
 
-type Position struct{
-	gorm.Model
-	Name string `gorm:"varchar(50);not null;unique_index" json: "Name"`
-	description string `json: "description"`
+type Position struct {
+    gorm.Model
+    PositionName        string `gorm:"type:varchar(50);not null;unique_index" json:"Name"`
+    Description string `json:"description"`
 }
 

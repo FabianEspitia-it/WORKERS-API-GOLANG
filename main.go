@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/FabianEspitia-it/workers-crud/initializers"
+	"github.com/FabianEspitia-it/workers-crud/routes"
 )
 
 
@@ -13,11 +14,7 @@ func init(){
 func main()  {
 	router := gin.Default()
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	router.POST("/worker", routes.Add_worker)
 	
 
 	router.Run()
