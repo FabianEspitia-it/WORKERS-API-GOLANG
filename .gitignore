@@ -1,0 +1,39 @@
+# Compiled binary files
+*.exe
+*.o
+*.out
+
+# Build directories
+/_obj/
+/_test/
+/_testmain.go
+/bin/
+/vendor/
+
+# Dependency directories
+/Godeps/
+/_workspace/
+
+# Output directories
+/_test/
+
+# Go generated files
+*.6
+*.8
+*.a
+*.so
+*.test
+*.prof
+
+# Compiled Go files
+*.test
+*.prof
+
+# User-specific files
+.idea
+.vscode
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
